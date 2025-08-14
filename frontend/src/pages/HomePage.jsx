@@ -1,24 +1,35 @@
-import React, { use } from 'react'
-import Navbar from '../components/Navbar'
+import React, { useState } from 'react';
+import Navbar from '../components/Navbar';
 import RateLimitedUI from '../components/RateLimitedUI';
+import { useEffect } from "react";
+import axios from "axios";
+import { toast } from 'react-hot-toast';
+
 
 const HomePage = () => {
 
-  const [isRateLimited, setIsRateLimited] = useState(true);
+  const [isRateLimited, setIsRateLimited] = useState(false);
   const [notes, setNotes] = useState([]);
-  const [loading, setLoading] = useState(ture);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const res = await fetch("http://localhost:5001/api/notes");
-        const data = await res.json();
-        console.log(data);
+        const res = await axios.get("http://localhost:5001/api/notes");
+        console.log(res.data);
+        setNotes(res.data);
+        setIsRateLimited(false);
       } catch (error) {
         console.log("Error fetching notes");
+        if(error.response.status === 429) {
+          setIsRateLimited(true);
+        } else {
+          toast.error("Failed to fetch notes");
       }
+    } finally {
+      setLoading(false);
     }
-
+  };
     fetchNotes();
   }, []);
 
@@ -31,4 +42,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default HomePage;

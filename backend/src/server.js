@@ -1,8 +1,11 @@
 import experss from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+//packge import top local import bottom
 import noteRoutes from './routes/notesRoutes.js';
 import { connectDB } from './config/db.js';
-import dotenv from 'dotenv';
 import rateLimiter from './middleware/rateLimiter.js';
+
 
 dotenv.config();
 
@@ -13,6 +16,9 @@ connectDB();
 //middleware
 app.use(experss.json()); // Parse JSON bodies
 app.use(rateLimiter);
+app.use(cors({
+    origin: 'http://localhost:5173', // Allow requests from this origin
+})); // Enable CORS for all routes
 //simple custom middleware 
 // app.use((req, res, next) => {
 
