@@ -14,11 +14,12 @@ const PORT = process.env.PORT || 5001;
 
 connectDB();
 //middleware
+app.use(cors({
+    origin: "http://localhost:5173", // Allow requests from this origin
+})); // Enable CORS for all routes
 app.use(experss.json()); // Parse JSON bodies
 app.use(rateLimiter);
-app.use(cors({
-    origin: 'http://localhost:5173', // Allow requests from this origin
-})); // Enable CORS for all routes
+
 //simple custom middleware 
 // app.use((req, res, next) => {
 

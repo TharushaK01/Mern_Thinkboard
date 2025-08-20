@@ -9,7 +9,7 @@ dotenv.config();
 // one user send 5 requests per 60 seconds whole application will brake 
 const ratelimit = new Ratelimit ({
     redis: Redis.fromEnv(),
-    limiter: Ratelimit.slidingWindow(5, "60 s"),
+    limiter: Ratelimit.slidingWindow(10, "20 s"),
 });
 
 export default ratelimit;
